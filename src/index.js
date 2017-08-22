@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
+import App from './components/App';
 import registerServiceWorker from './registerServiceWorker';
 import { createStore, applyMiddleware, compose } from 'redux';
 import reducer from './reducers';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import 'semantic-ui-css/semantic.min.css';
 
 const logger = store => next => action => {
     console.group(action.type);
@@ -22,7 +24,9 @@ const store = createStore(reducer, composeEnhancers(applyMiddleware(logger)));
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <BrowserRouter>
+            <App />
+        </BrowserRouter>
     </Provider>,
     document.getElementById('root')
 );
