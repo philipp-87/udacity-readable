@@ -10,8 +10,8 @@ class NavigationView extends Component {
         return (
             <ol>
                 <Button>All</Button>
-                {categories[0] &&
-                    categories[0].map((category, index) =>
+                {categories &&
+                    categories.map((category, index) =>
                         <Button key={index}>
                             {category.name}
                         </Button>

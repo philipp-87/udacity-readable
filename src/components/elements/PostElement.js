@@ -1,23 +1,29 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import { Button, Label } from 'semantic-ui-react';
 import { Icon } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
+import PostDetailView from '../PostDetailView';
 var _ = require('lodash');
 
 class PostElement extends Component {
     render() {
         const { post } = this.props;
         return (
-            <div>
-                <h1>
+            <div
+                style={{
+                    marginTop: 20,
+                    border: '1px solid black'
+                }}
+            >
+                <h3 style={{ color: 'powderblue' }}>
                     {post.title}
-                </h1>
-                <h2>
-                    {post.body}
-                </h2>
-                <h3>
-                    {new Date(post.timestamp).toString()}
                 </h3>
+                <h3>
+                    {post.body}
+                </h3>
+                <p>
+                    {new Date(post.timestamp).toString()}
+                </p>
                 <div>
                     <Button>
                         {post.category}
@@ -29,6 +35,7 @@ class PostElement extends Component {
 
                     <Icon name="plus" color="green" />
                     <Icon name="minus" color="red" />
+                    <Link to="/post">Go to PostDetailView</Link>
                 </div>
             </div>
         );
