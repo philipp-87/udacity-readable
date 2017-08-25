@@ -1,31 +1,21 @@
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 import { connect } from 'react-redux';
-import { showCategories } from '../actions';
-import * as ReadableAPI from '../utils/ReadableAPI';
 import { Button } from 'semantic-ui-react';
 var _ = require('lodash');
 
 class NavigationView extends Component {
-    componentDidMount() {
-        const { loadCategories } = this.props;
-        ReadableAPI.getCategories().then(categories => {
-            loadCategories({ categories });
-        });
-    }
-
     getNavigation() {
         const { categories } = this.props;
         return (
             <ol>
                 <Button>All</Button>
-                {!_.isEmpty(categories)
-                    ? categories.map((category, index) =>
-                          <Button key={index} onClick={this._onClick}>
-                              {category.name}
-                          </Button>
-                      )
-                    : null}
+                {categories[0] &&
+                    categories[0].map((category, index) =>
+                        <Button key={index}>
+                            {category.name}
+                        </Button>
+                    )}
             </ol>
         );
     }
@@ -41,13 +31,8 @@ class NavigationView extends Component {
 }
 
 function mapStateToProps({ categories }) {
-    return categories;
+    console.log(categories);
+    return { categories };
 }
 
-function mapDispatchToProps(dispatch) {
-    return {
-        loadCategories: data => dispatch(showCategories(data))
-    };
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(NavigationView);
+export default connect(mapStateToProps)(NavigationView);
