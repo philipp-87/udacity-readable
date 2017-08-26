@@ -7,7 +7,7 @@ class PostsView extends Component {
     render() {
         const { posts } = this.props;
         return (
-            <div style={{ margin: 'auto', width: '50%' }}>
+            <div>
                 {posts &&
                     posts.map((post, index) =>
                         <PostElement key={index} post={post} />

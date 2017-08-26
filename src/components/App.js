@@ -13,7 +13,6 @@ class App extends Component {
     componentDidMount() {
         const { loadCategories } = this.props;
         ReadableAPI.getCategories().then(categories => {
-            console.log(categories);
             loadCategories(categories);
         });
 
