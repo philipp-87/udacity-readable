@@ -35,7 +35,7 @@ class PostElement extends Component {
 
                     <Icon name="plus" color="green" />
                     <Icon name="minus" color="red" />
-                    <Link to="/post">Go to PostDetailView</Link>
+                    <Link to="/post">Go to CategoryView</Link>
                 </div>
             </div>
         );

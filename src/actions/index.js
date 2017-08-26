@@ -8,7 +8,7 @@ export function showCategories(categories) {
     };
 }
 
-export function showAllPosts({ posts }) {
+export function showAllPosts(posts) {
     return {
         type: SHOW_ALL_POSTS,
         posts

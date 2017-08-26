@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import '../App.css';
-import { Route } from 'react-router-dom';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import PostsView from './PostsView';
 import CategoryView from './CategoryView';
-import EditView from './EditView';
 import PostDetailView from './PostDetailView';
 import NavigationView from './NavigationView';
 import { connect } from 'react-redux';
@@ -19,7 +19,7 @@ class App extends Component {
 
         const { loadPosts } = this.props;
         ReadableAPI.getPosts().then(posts => {
-            loadPosts({ posts });
+            loadPosts(posts);
         });
     }
 
@@ -27,9 +27,19 @@ class App extends Component {
         return (
             <div className="App">
                 <NavigationView />
-                <Route exact path="/" render={() => <CategoryView />} />
-                <Route exact path="/edit" render={() => <EditView />} />
-                <Route exact path="/post" render={() => <PostDetailView />} />
+                <Switch>
+                    <Route exact path="/" render={() => <PostsView />} />
+                    <Route
+                        exact
+                        path="/category/:name"
+                        render={props => <CategoryView {...props} />}
+                    />
+                    <Route
+                        exact
+                        path="/category/post/:id"
+                        render={() => <PostDetailView />}
+                    />
+                </Switch>
             </div>
         );
     }
@@ -46,4 +56,4 @@ function mapStateToProps() {
     return {};
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));
