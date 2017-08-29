@@ -36,7 +36,7 @@ class App extends Component {
                     <Route
                         exact
                         path="/category/post/:id"
-                        render={() => <PostDetailView />}
+                        render={props => <PostDetailView {...props}/>}
                     />
                 </Switch>
             </div>

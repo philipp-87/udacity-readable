@@ -1,10 +1,12 @@
 import { SHOW_CATEGORIES } from '../actions';
 import { SHOW_ALL_POSTS } from '../actions';
 import { VOTE_POST } from '../actions';
+import { SHOW_COMMENTS_BY_POST_ID } from '../actions';
 
 const initialState = {
     categories: [],
-    posts: []
+    posts: [],
+    comments: []
 };
 
 function Readable(state = initialState, action) {
@@ -29,6 +31,12 @@ function Readable(state = initialState, action) {
                     return post;
                 })
             };
+        case SHOW_COMMENTS_BY_POST_ID:
+            return {
+                ...state,
+                comments: state.comments.concat(action.comments)
+            };
+
 
         default:
             return state;

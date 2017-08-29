@@ -4,11 +4,19 @@ import { Icon } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import PostDetailView from '../PostDetailView';
 import { connect } from 'react-redux';
-import { votePost } from '../../actions';
+import { votePost, showComments } from '../../actions';
 import * as ReadableAPI from '../../utils/ReadableAPI';
 var _ = require('lodash');
 
 class PostElement extends Component {
+    componentDidMount() {
+        const { loadComments, post } = this.props;
+        ReadableAPI.getCommentsByPostId(post.id).then(comments => {
+            console.log(comments);
+            loadComments(comments);
+        });
+    }
+
     voteUp() {
         const { voteForPost, post } = this.props;
         ReadableAPI.votePost(post.id, 'upVote').then(post => {
@@ -23,8 +31,27 @@ class PostElement extends Component {
         });
     }
 
+    getComments(){
+        const { post, comments } = this.props;
+        var commentsArray = [];
+
+        comments.map((comment) => {
+            if(comment.parentId === post.id){
+                if(!_.some(commentsArray, comment)){
+                    commentsArray.push(comment);
+                }
+                return commentsArray
+            }
+            return commentsArray;
+        })
+        console.log(commentsArray);
+        return commentsArray;
+
+    }
+
     render() {
-        const { post } = this.props;
+        const { post, comments } = this.props;
+        console.log(post);
         return (
             <div
                 style={{
@@ -57,8 +84,17 @@ class PostElement extends Component {
                     <Button onClick={() => this.voteDown()}>
                         <Icon name="minus" color="red" />
                     </Button>
-
-                    <Link to="/post">Go to CategoryView</Link>
+                    <Link
+                            to={{
+                                pathname: `/category/post/${post.id}`,
+                                state: { comments: this.getComments() }
+                            }}
+                        >
+                            <Button>
+                                <Icon name="comments" color="black" />
+                                {this.getComments().length}
+                            </Button>
+                        </Link>
                 </div>
             </div>
         );
@@ -67,12 +103,13 @@ class PostElement extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        voteForPost: data => dispatch(votePost(data))
+        voteForPost: data => dispatch(votePost(data)),
+        loadComments: data => dispatch(showComments(data))
     };
 }
 
-function mapStateToProps() {
-    return {};
+function mapStateToProps({ comments}) {
+    return { comments };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostElement);

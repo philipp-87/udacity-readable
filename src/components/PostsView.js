@@ -4,6 +4,7 @@ import PostElement from './elements/PostElement';
 var _ = require('lodash');
 
 class PostsView extends Component {
+
     render() {
         const { posts } = this.props;
         return (
