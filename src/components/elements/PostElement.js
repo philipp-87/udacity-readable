@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Label } from 'semantic-ui-react';
-import { Icon } from 'semantic-ui-react';
+import { Button, Label, Icon, Item } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
-import PostDetailView from '../PostDetailView';
 import { connect } from 'react-redux';
-import { votePost, showComments } from '../../actions';
+import { votePost, showComments, removePost } from '../../actions';
 import * as ReadableAPI from '../../utils/ReadableAPI';
 var _ = require('lodash');
 
@@ -12,7 +10,6 @@ class PostElement extends Component {
     componentDidMount() {
         const { loadComments, post } = this.props;
         ReadableAPI.getCommentsByPostId(post.id).then(comments => {
-            console.log(comments);
             loadComments(comments);
         });
     }
@@ -31,6 +28,13 @@ class PostElement extends Component {
         });
     }
 
+    deletePost(){
+        const { deletePost, post } = this.props;
+        ReadableAPI.deletePost(post.id).then(() => {
+            deletePost(post);
+        });
+    }
+
     getComments(){
         const { post, comments } = this.props;
         var commentsArray = [];
@@ -44,59 +48,48 @@ class PostElement extends Component {
             }
             return commentsArray;
         })
-        console.log(commentsArray);
         return commentsArray;
 
     }
 
     render() {
-        const { post, comments } = this.props;
-        console.log(post);
+        const { post } = this.props;
         return (
-            <div
-                style={{
-                    marginTop: 20,
-                    border: '1px solid black',
-                    width: '25%',
-                    margin: 'auto'
-                }}
-            >
-                <h3 style={{ color: 'powderblue', textAlign: 'left' }}>
+            <Item>
+            <Item.Content>
+                <Item.Header as='a'>
                     {post.title}
-                </h3>
-                <h3 style={{ textAlign: 'left' }}>
-                    {post.body}
-                </h3>
-                <p style={{ textAlign: 'left' }}>
+                </Item.Header>
+                <Item.Meta>
                     {new Date(post.timestamp).toString()}
-                </p>
-                <div style={{ textAlign: 'left' }}>
-                    <Button>
-                        {post.category}
-                    </Button>
-
-                    <Label size="large">
-                        <Icon name="star" color="yellow" /> {post.voteScore}
-                    </Label>
-                    <Button onClick={() => this.voteUp()}>
+                </Item.Meta>
+                <Item.Description>
+                    {post.body}
+                </Item.Description>
+                <Item.Extra>
+                    <Label content={post.category} />
+                    <Label icon='star' content={post.voteScore} />
+                    <Label onClick={() => this.voteUp()}>
                         <Icon name="plus" color="green" />
-                    </Button>
-                    <Button onClick={() => this.voteDown()}>
+                    </Label>
+                    <Label onClick={() => this.voteDown()}>
                         <Icon name="minus" color="red" />
-                    </Button>
+                    </Label>
                     <Link
-                            to={{
-                                pathname: `/category/post/${post.id}`,
-                                state: { comments: this.getComments() }
-                            }}
-                        >
-                            <Button>
-                                <Icon name="comments" color="black" />
-                                {this.getComments().length}
-                            </Button>
-                        </Link>
-                </div>
-            </div>
+                        to={{
+                            pathname: `/category/post/${post.id}`,
+                            state: { comments: this.getComments(), post: post }
+                        }}
+                    >
+                        <Label>
+                            <Icon name="comments" color="black" />
+                            {this.getComments().length}
+                        </Label>
+                    </Link>
+                    <Label onClick={() => this.deletePost()} icon='remove' color='red'/>
+                </Item.Extra>
+            </Item.Content>
+            </Item>
         );
     }
 }
@@ -104,7 +97,8 @@ class PostElement extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         voteForPost: data => dispatch(votePost(data)),
-        loadComments: data => dispatch(showComments(data))
+        loadComments: data => dispatch(showComments(data)),
+        deletePost: data => dispatch(removePost(data))
     };
 }
 

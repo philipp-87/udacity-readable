@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PostElement from './elements/PostElement';
-var _ = require('lodash');
+import AddPostModalElement from './elements/AddPostModalElement';
+import { Item, Header, Button, Modal } from 'semantic-ui-react';
 
 class PostsView extends Component {
 
     render() {
         const { posts } = this.props;
         return (
-            <div>
+            <Item.Group>
+                <Header as='h3' dividing>
+                    Posts
+                <AddPostModalElement/>
+                </Header>
                 {posts &&
                     posts.map((post, index) =>
                         <PostElement key={index} post={post} />
                     )}
-            </div>
+            </Item.Group>
         );
     }
 }

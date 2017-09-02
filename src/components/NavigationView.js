@@ -1,42 +1,37 @@
 import React, { Component } from 'react';
 import logo from '../logo.svg';
 import { connect } from 'react-redux';
-import { Button } from 'semantic-ui-react';
+import { Button, List, Menu } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 var _ = require('lodash');
 
 class NavigationView extends Component {
-    getNavigation() {
+    render() {
         const { categories } = this.props;
         return (
-            <ol>
-                <Link to="/">
-                    <Button>All</Button>
-                </Link>
-                {categories &&
-                    categories.map((category, index) =>
-                        <Link
-                            to={{
-                                pathname: `/category/${category.name}`,
-                                state: { category: category.name }
-                            }}
-                            key={index}
-                        >
-                            <Button key={index}>
-                                {category.name}
-                            </Button>
-                        </Link>
-                    )}
-            </ol>
-        );
-    }
-
-    render() {
-        return (
-            <div className="App-header">
+            <Menu inverted>
                 <img src={logo} className="App-logo" alt="logo" />
-                {this.getNavigation()}
-            </div>
+                        <Menu.Item name='all'>
+                            <Link to="/">
+                                All
+                            </Link>
+                        </Menu.Item>
+                        {categories &&
+                            categories.map((category, index) =>
+                                <Menu.Item name={category.name} key={index}>
+                                    <Link
+                                        to={{
+                                            pathname: `/category/${category.name}`,
+                                            state: { category: category.name }
+                                        }}
+                                    >
+                                        {_.upperFirst(category.name)}
+                                        
+                                    </Link>
+                                </Menu.Item>
+                        )}
+                    
+            </Menu>
         );
     }
 }

@@ -2,6 +2,9 @@ import { SHOW_CATEGORIES } from '../actions';
 import { SHOW_ALL_POSTS } from '../actions';
 import { VOTE_POST } from '../actions';
 import { SHOW_COMMENTS_BY_POST_ID } from '../actions';
+import { ADD_POST } from '../actions';
+import { REMOVE_POST } from '../actions';
+var _ = require('lodash');
 
 const initialState = {
     categories: [],
@@ -20,6 +23,18 @@ function Readable(state = initialState, action) {
             return {
                 ...state,
                 posts: action.posts
+            };
+        case ADD_POST:
+            return {
+                ...state,
+                posts: state.posts.concat(action.post)
+            };
+        case REMOVE_POST:
+            return {
+                ...state,
+                posts: state.posts.filter((post) => {
+                        return post.id !== action.post.id
+                       })
             };
         case VOTE_POST:
             return {

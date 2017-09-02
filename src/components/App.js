@@ -8,6 +8,7 @@ import NavigationView from './NavigationView';
 import { connect } from 'react-redux';
 import { showCategories, showAllPosts } from '../actions';
 import * as ReadableAPI from '../utils/ReadableAPI';
+import { Grid, Segment } from 'semantic-ui-react'
 
 class App extends Component {
     componentDidMount() {
@@ -22,10 +23,12 @@ class App extends Component {
         });
     }
 
+    
+
     render() {
         return (
-            <div className="App">
-                <NavigationView />
+            <div className="App">      
+                <NavigationView />    
                 <Switch>
                     <Route exact path="/" render={() => <PostsView />} />
                     <Route

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PostElement from './elements/PostElement';
+import { Item, Header } from 'semantic-ui-react';
 
 class CategoryView extends Component {
     render() {
@@ -12,15 +13,15 @@ class CategoryView extends Component {
         const category = this.props.location.state.category;
 
         return (
-            <div>
+            <Item.Group>
+                <Header as='h3' dividing>Posts</Header>
                 {posts
                     .filter(post => post.category === category)
                     .map((post, index) =>
                         <PostElement key={index} post={post} />
                     )}
-                <p className="App-intro">CATEGORY VIEW</p>
                 <div />
-            </div>
+            </Item.Group>
         );
     }
 }
