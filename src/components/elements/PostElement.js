@@ -1,17 +1,15 @@
 import React, { Component } from 'react';
-import { Button, Label, Icon, Item } from 'semantic-ui-react';
+import { Label, Icon, Item } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { votePost, showComments, removePost } from '../../actions';
+import { votePost, fetchComments, removePost } from '../../actions';
 import * as ReadableAPI from '../../utils/ReadableAPI';
 var _ = require('lodash');
 
 class PostElement extends Component {
     componentDidMount() {
         const { loadComments, post } = this.props;
-        ReadableAPI.getCommentsByPostId(post.id).then(comments => {
-            loadComments(comments);
-        });
+        loadComments(post.id);
     }
 
     voteUp() {
@@ -53,7 +51,11 @@ class PostElement extends Component {
     }
 
     render() {
-        const { post } = this.props;
+        const { post, comments } = this.props;
+        let id = post.id
+        console.log(comments[id]);
+        let newComments = comments[id]
+
         return (
             <Item>
             <Item.Content>
@@ -78,12 +80,12 @@ class PostElement extends Component {
                     <Link
                         to={{
                             pathname: `/category/post/${post.id}`,
-                            state: { comments: this.getComments(), post: post }
+                            state: { comments: newComments, post: post }
                         }}
                     >
                         <Label>
                             <Icon name="comments" color="black" />
-                            {this.getComments().length}
+                            {!_.isUndefined(newComments) ? newComments.length : '0'}
                         </Label>
                     </Link>
                     <Label onClick={() => this.deletePost()} icon='remove' color='red'/>
@@ -97,7 +99,7 @@ class PostElement extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         voteForPost: data => dispatch(votePost(data)),
-        loadComments: data => dispatch(showComments(data)),
+        loadComments: data => dispatch(fetchComments(data)),
         deletePost: data => dispatch(removePost(data))
     };
 }

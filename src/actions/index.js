@@ -1,9 +1,12 @@
+import * as ReadableAPI from '../utils/ReadableAPI';
 export const SHOW_CATEGORIES = 'SHOW_CATEGORIES';
 export const SHOW_ALL_POSTS = 'SHOW_ALL_POSTS';
 export const VOTE_POST = 'VOTE_POST';
 export const SHOW_COMMENTS_BY_POST_ID = 'SHOW_COMMENTS_BY_POST_ID'
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
+export const ADD_COMMENT = 'ADD_COMMENT'
+
 
 export function showCategories(categories) {
     return {
@@ -26,12 +29,19 @@ export function votePost(post) {
     };
 }
 
-export function showComments(comments) {
+export function showComments(comments, id) {
     return {
         type: SHOW_COMMENTS_BY_POST_ID,
-        comments
+        comments,
+        id
     };
 }
+
+export const fetchComments = (id) => dispatch => (
+  ReadableAPI
+      .getCommentsByPostId(id)
+      .then(comments => dispatch(showComments(comments, id)))
+)
 
 export function addPost(post) {
     return {
@@ -44,5 +54,12 @@ export function removePost(post) {
     return {
         type: REMOVE_POST,
         post
+    };
+}
+
+export function addComment(comment) {
+    return {
+        type: ADD_COMMENT,
+        comment
     };
 }

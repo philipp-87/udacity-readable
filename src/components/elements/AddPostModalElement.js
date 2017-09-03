@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Header, Button, Modal, Form, TextArea } from 'semantic-ui-react';
+import { Button, Modal, Form, TextArea } from 'semantic-ui-react';
 import { addPost } from '../../actions';
 import * as ReadableAPI from '../../utils/ReadableAPI';
 var _ = require('lodash');
@@ -29,7 +29,11 @@ class AddPostModalElement extends Component {
 
     submitPost(){
         const { createPost } = this.props;
-        ReadableAPI.createPost({title: this.state.title, owner: this.state.owner, category: this.state.category, body: this.state.message}).then(post => {
+        ReadableAPI.createPost({
+            title: this.state.title, 
+            owner: this.state.owner, 
+            category: this.state.category, 
+            body: this.state.message}).then(post => {
             createPost(post);
         });
     }
@@ -42,11 +46,12 @@ class AddPostModalElement extends Component {
             category['text'] = _.upperFirst(category.name)
             category['value'] = category.name
             delete category['path']; 
+            return category;
         })
         console.log(this.state)
 
         return (
-            <Modal open={this.state.isOpen} trigger={<Button onClick={this.openModal}>Show Modal</Button>}>
+            <Modal open={this.state.isOpen} trigger={<Button onClick={this.openModal}>Add Post</Button>}>
                 <Modal.Header>Add Post</Modal.Header>
                 <Modal.Content>
                   <Modal.Description>

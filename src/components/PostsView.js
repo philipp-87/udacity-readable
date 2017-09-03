@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PostElement from './elements/PostElement';
 import AddPostModalElement from './elements/AddPostModalElement';
-import { Item, Header, Button, Modal } from 'semantic-ui-react';
+import { Item, Header } from 'semantic-ui-react';
 
 class PostsView extends Component {
 
@@ -15,8 +15,8 @@ class PostsView extends Component {
                 <AddPostModalElement/>
                 </Header>
                 {posts &&
-                    posts.map((post, index) =>
-                        <PostElement key={index} post={post} />
+                    posts.map((post) =>
+                        <PostElement key={post.id} post={post} />
                     )}
             </Item.Group>
         );

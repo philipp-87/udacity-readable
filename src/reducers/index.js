@@ -4,7 +4,7 @@ import { VOTE_POST } from '../actions';
 import { SHOW_COMMENTS_BY_POST_ID } from '../actions';
 import { ADD_POST } from '../actions';
 import { REMOVE_POST } from '../actions';
-var _ = require('lodash');
+import { ADD_COMMENT } from '../actions';
 
 const initialState = {
     categories: [],
@@ -49,10 +49,18 @@ function Readable(state = initialState, action) {
         case SHOW_COMMENTS_BY_POST_ID:
             return {
                 ...state,
-                comments: state.comments.concat(action.comments)
+                comments: {
+                    ...state.comments,
+                    [action.id]: action.comments
+                }
+                            
             };
 
-
+        case ADD_COMMENT:
+            return {
+                ...state,
+                comments: state.comments.concat(action.comment)
+            };
         default:
             return state;
     }

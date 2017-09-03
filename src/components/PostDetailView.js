@@ -1,22 +1,29 @@
 import React, { Component } from 'react';
 import PostElement from './elements/PostElement';
 import { Comment, Header } from 'semantic-ui-react';
+import AddCommentElement from './elements/AddCommentElement';
+import { connect } from 'react-redux';
+
 
 class PostDetailView extends Component {
 
     render() {
-        let comments = this.props.location.state.comments;
+
         let post = this.props.location.state.post;
-        console.log(comments);
+        const { comments } = this.props
+        let id = post.id
+        let newComments = comments[id]
+
+
         return (
             <div>
                 <Header as='h3' dividing>Post</Header>
                 <PostElement post={post} />
                 <Comment.Group>
                     <Header as='h3' dividing>Comments</Header>
-                    {comments &&
-                        comments.map((comment, index) =>
-                            <Comment key={index}>
+                    {newComments &&
+                        newComments.map((comment) =>
+                            <Comment key={comment.id}>
                             <Comment.Content>
                                 <Comment.Author>
                                     {comment.author}
@@ -30,10 +37,19 @@ class PostDetailView extends Component {
                             </Comment.Content>
                             </Comment>
                     )}
+                    <AddCommentElement post={post}/>
                 </Comment.Group>
             </div>
         );
     }
 }
 
-export default PostDetailView;
+function mapDispatchToProps(dispatch) {
+    return {};
+}
+
+function mapStateToProps({ comments}) {
+    return { comments };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostDetailView);

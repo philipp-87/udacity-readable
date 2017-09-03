@@ -36,7 +36,7 @@ export const createPost = data =>
             timestamp: Date.now(),
             title: data.title,
             body: data.body,
-            owner: data.owner,
+            author: data.owner,
             category: data.category
         })
     }).then(res => res.json());
@@ -90,7 +90,7 @@ export const createComment = data =>
             id: getUUID(),
             timestamp: Date.now(),
             body: data.body,
-            owner: data.owner,
+            author: data.owner,
             parentId: data.parentId
         })
     }).then(res => res.json());
