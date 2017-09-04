@@ -1,13 +1,23 @@
 import React, { Component } from 'react';
 import PostElement from './elements/PostElement';
 import { Comment, Header, Label } from 'semantic-ui-react';
-import AddCommentElement from './elements/AddCommentElement';
 import { connect } from 'react-redux';
-import { removeComment } from '../actions';
+import { removeComment, addCommentAsync } from '../actions';
+import CommentForm from './elements/CommentForm'
 import * as ReadableAPI from '../utils/ReadableAPI';
 
 
 class PostDetailView extends Component {
+
+    submitComment = (values) => {
+        let post = this.props.location.state.post;
+        const { createComment } = this.props;
+        createComment({
+            body: values.body,
+            owner: values.author, 
+            parentId: post.id
+        });
+    }
 
     deleteComment(comment){
         const { deleteComment } = this.props;
@@ -47,7 +57,7 @@ class PostDetailView extends Component {
                             </Comment.Content>
                             </Comment>
                     )}
-                    <AddCommentElement post={post}/>
+                    <CommentForm onSubmit={this.submitComment}/>
                 </Comment.Group>
             </div>
         );
@@ -56,7 +66,8 @@ class PostDetailView extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        deleteComment: data => dispatch(removeComment(data))
+        deleteComment: data => dispatch(removeComment(data)),
+        createComment: data => dispatch(addCommentAsync(data))
     };
 }
 
