@@ -39,7 +39,7 @@ class AddPostModalElement extends Component {
     }
 
     render() {
-
+        console.log(this.props);
         const { categories } = this.props;
         categories.map(category => {
             category['key'] = category.name
@@ -48,7 +48,6 @@ class AddPostModalElement extends Component {
             delete category['path']; 
             return category;
         })
-        console.log(this.state)
 
         return (
             <Modal open={this.state.isOpen} trigger={<Button onClick={this.openModal}>Add Post</Button>}>
@@ -79,8 +78,8 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-function mapStateToProps({ categories }) {
-    return { categories };
+function mapStateToProps(state) {
+    return {categories: state.reducer.categories};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(AddPostModalElement);

@@ -23,8 +23,8 @@ class PostsView extends Component {
     }
 }
 
-function mapStateToProps({ posts }) {
-    return { posts };
+function mapStateToProps(state) {
+    return {posts: state.reducer.posts};
 }
 
 export default connect(mapStateToProps)(PostsView);

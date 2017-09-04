@@ -27,8 +27,8 @@ class CategoryView extends Component {
     }
 }
 
-function mapStateToProps({ posts }) {
-    return { posts };
+function mapStateToProps(state) {
+    return {posts: state.reducer.posts};
 }
 
 export default withRouter(connect(mapStateToProps)(CategoryView));

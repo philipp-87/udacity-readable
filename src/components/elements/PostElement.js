@@ -53,7 +53,6 @@ class PostElement extends Component {
     render() {
         const { post, comments } = this.props;
         let id = post.id
-        console.log(comments[id]);
         let newComments = comments[id]
 
         return (
@@ -104,8 +103,8 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-function mapStateToProps({ comments}) {
-    return { comments };
+function mapStateToProps(state) {
+    return {comments: state.reducer.comments};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostElement);

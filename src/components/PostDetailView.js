@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import PostElement from './elements/PostElement';
-import { Comment, Header } from 'semantic-ui-react';
+import { Comment, Header, Label } from 'semantic-ui-react';
 import AddCommentElement from './elements/AddCommentElement';
 import { connect } from 'react-redux';
+import { removeComment } from '../actions';
+import * as ReadableAPI from '../utils/ReadableAPI';
 
 
 class PostDetailView extends Component {
+
+    deleteComment(comment){
+        const { deleteComment } = this.props;
+        ReadableAPI.deleteComment(comment.id).then(() => {
+            deleteComment(comment);
+        });
+    }
 
     render() {
 
@@ -27,6 +36,7 @@ class PostDetailView extends Component {
                             <Comment.Content>
                                 <Comment.Author>
                                     {comment.author}
+                                    <Label onClick={() => this.deleteComment(comment)} icon='remove' color='red'/>
                                 </Comment.Author>
                                 <Comment.Metadata>
                                     <div>{new Date(comment.timestamp).toString()}</div>
@@ -45,11 +55,13 @@ class PostDetailView extends Component {
 }
 
 function mapDispatchToProps(dispatch) {
-    return {};
+    return {
+        deleteComment: data => dispatch(removeComment(data))
+    };
 }
 
-function mapStateToProps({ comments}) {
-    return { comments };
+function mapStateToProps(state) {
+    return {comments: state.reducer.comments};
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostDetailView);

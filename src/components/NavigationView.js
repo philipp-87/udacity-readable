@@ -36,8 +36,8 @@ class NavigationView extends Component {
     }
 }
 
-function mapStateToProps({ categories }) {
-    return { categories };
+function mapStateToProps(state) {
+    return {categories: state.reducer.categories};
 }
 
 export default connect(mapStateToProps)(NavigationView);

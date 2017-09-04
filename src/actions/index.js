@@ -6,6 +6,7 @@ export const SHOW_COMMENTS_BY_POST_ID = 'SHOW_COMMENTS_BY_POST_ID'
 export const ADD_POST = 'ADD_POST'
 export const REMOVE_POST = 'REMOVE_POST'
 export const ADD_COMMENT = 'ADD_COMMENT'
+export const REMOVE_COMMENT = 'REMOVE_COMMENT'
 
 
 export function showCategories(categories) {
@@ -60,6 +61,19 @@ export function removePost(post) {
 export function addComment(comment) {
     return {
         type: ADD_COMMENT,
+        comment
+    };
+}
+
+export const addCommentAsync = (data) => dispatch => (
+  ReadableAPI
+      .createComment(data)
+      .then(comment => dispatch(addComment(comment)))
+)
+
+export function removeComment(comment) {
+    return {
+        type: REMOVE_COMMENT,
         comment
     };
 }

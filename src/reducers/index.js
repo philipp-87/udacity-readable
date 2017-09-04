@@ -5,6 +5,7 @@ import { SHOW_COMMENTS_BY_POST_ID } from '../actions';
 import { ADD_POST } from '../actions';
 import { REMOVE_POST } from '../actions';
 import { ADD_COMMENT } from '../actions';
+import { REMOVE_COMMENT } from '../actions';
 
 const initialState = {
     categories: [],
@@ -59,7 +60,21 @@ function Readable(state = initialState, action) {
         case ADD_COMMENT:
             return {
                 ...state,
-                comments: state.comments.concat(action.comment)
+                comments: {
+                    ...state.comments,
+                    [action.comment.parentId]: state.comments[action.comment.parentId].concat(action.comment)
+                }
+            };
+
+        case REMOVE_COMMENT:
+            return {
+                ...state,
+                comments: {
+                    ...state.comments,
+                    [action.comment.parentId]: state.comments[action.comment.parentId].filter((comment) => {
+                                                 return comment.id !== action.comment.id
+                                               })
+                }
             };
         default:
             return state;
