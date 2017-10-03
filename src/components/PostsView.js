@@ -1,52 +1,46 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import PostElement from './elements/PostElement';
-import AddPostModalElement from './elements/AddPostModalElement';
-import { Item, Header } from 'semantic-ui-react';
-import PostForm from './elements/PostForm'
-import { addPost } from '../actions';
-import * as ReadableAPI from '../utils/ReadableAPI';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import PostElement from "./elements/PostElement";
+import PostAddModalElement from "./elements/PostAddModalElement";
+import { Item, Header, Button } from "semantic-ui-react";
+import { togglePostModal } from "../actions";
 
 class PostsView extends Component {
 
-    submitPost = (values) => {
-
-    console.log(values)
-    ReadableAPI.createPost({
-            title: values.title, 
-            owner: values.author, 
-            category: values.category, 
-            body: values.body}).then(post => {
-            this.props.createPost(post);
-        });
+    toggleModal(){
+        this.props.togglePostModal(this.props.isOpenPostModal)
     }
 
-
     render() {
-        const { posts } = this.props;
+        const { posts, isOpenPostModal } = this.props;
         return (
             <Item.Group>
-                <Header as='h3' dividing>
+                <Header as="h3" dividing>
                     Posts
-                <AddPostModalElement/>
+                    <Button size='tiny' style={{marginLeft: 20}} onClick={() => this.toggleModal()}>Add Post</Button>
+                    <PostAddModalElement open={isOpenPostModal}/>
                 </Header>
+                <Item.Group divided>
                 {posts &&
-                    posts.map((post) =>
+                    posts.map(post => (
                         <PostElement key={post.id} post={post} />
-                    )}
-                <PostForm onSubmit={this.submitPost} />
+                    ))}
+                </Item.Group>
             </Item.Group>
         );
     }
 }
 
 function mapStateToProps(state) {
-    return {posts: state.reducer.posts};
+    return { 
+        posts: state.reducer.posts, 
+        isOpenPostModal: state.reducer.modal.postModal
+    };
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        createPost: data => dispatch(addPost(data)),
+        togglePostModal: data => dispatch(togglePostModal(data))
     };
 }
 

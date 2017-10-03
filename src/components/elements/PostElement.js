@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import { Label, Icon, Item } from 'semantic-ui-react';
+import { Label, Item, Button } from 'semantic-ui-react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { votePost, fetchComments, removePost } from '../../actions';
+import { votePost, fetchComments, removePost, toggleEditPostModal } from '../../actions';
 import * as ReadableAPI from '../../utils/ReadableAPI';
+import PostEditModalElement from "./PostEditModalElement";
 var _ = require('lodash');
 
 class PostElement extends Component {
@@ -50,8 +51,12 @@ class PostElement extends Component {
 
     }
 
+    toggleModal(){
+        this.props.toggleEditPostModal(this.props.isOpenEditPostModal)
+    }
+
     render() {
-        const { post, comments } = this.props;
+        const { post, comments, isOpenEditPostModal } = this.props;
         let id = post.id
         let newComments = comments[id]
 
@@ -70,24 +75,19 @@ class PostElement extends Component {
                 <Item.Extra>
                     <Label content={post.category} />
                     <Label icon='star' content={post.voteScore} />
-                    <Label onClick={() => this.voteUp()}>
-                        <Icon name="plus" color="green" />
-                    </Label>
-                    <Label onClick={() => this.voteDown()}>
-                        <Icon name="minus" color="red" />
-                    </Label>
+                    <Button size='tiny' onClick={() => this.voteUp()} icon='chevron up' compact/>
+                    <Button size='tiny' onClick={() => this.voteDown()} icon='chevron down' compact/>
                     <Link
                         to={{
                             pathname: `/category/post/${post.id}`,
                             state: { comments: newComments, post: post }
                         }}
                     >
-                        <Label>
-                            <Icon name="comments" color="black" />
-                            {!_.isUndefined(newComments) ? newComments.length : '0'}
-                        </Label>
+                        <Button size='tiny' content={!_.isUndefined(newComments) ? newComments.length : '0'} icon='comments' labelPosition='left' compact/>
                     </Link>
-                    <Label onClick={() => this.deletePost()} icon='remove' color='red'/>
+                    <Button size='tiny' icon='edit' onClick={() => this.toggleModal()} compact/>
+                    <Button size='tiny' color='red' onClick={() => this.deletePost()} icon='remove' compact/>
+                    <PostEditModalElement post={post} open={isOpenEditPostModal}/>
                 </Item.Extra>
             </Item.Content>
             </Item>
@@ -99,12 +99,16 @@ function mapDispatchToProps(dispatch) {
     return {
         voteForPost: data => dispatch(votePost(data)),
         loadComments: data => dispatch(fetchComments(data)),
-        deletePost: data => dispatch(removePost(data))
+        deletePost: data => dispatch(removePost(data)),
+        toggleEditPostModal: data => dispatch(toggleEditPostModal(data))
     };
 }
 
 function mapStateToProps(state) {
-    return {comments: state.reducer.comments};
+    return {
+        comments: state.reducer.comments,
+        isOpenEditPostModal: state.reducer.modal.editPostModal
+    };
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostElement);

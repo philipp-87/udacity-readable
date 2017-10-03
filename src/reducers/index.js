@@ -1,16 +1,28 @@
-import { SHOW_CATEGORIES } from '../actions';
-import { SHOW_ALL_POSTS } from '../actions';
-import { VOTE_POST } from '../actions';
-import { SHOW_COMMENTS_BY_POST_ID } from '../actions';
-import { ADD_POST } from '../actions';
-import { REMOVE_POST } from '../actions';
-import { ADD_COMMENT } from '../actions';
-import { REMOVE_COMMENT } from '../actions';
+import { SHOW_CATEGORIES } from "../actions";
+import { SHOW_ALL_POSTS } from "../actions";
+import { VOTE_POST } from "../actions";
+import { SHOW_COMMENTS_BY_POST_ID } from "../actions";
+import { ADD_POST } from "../actions";
+import { EDIT_POST } from "../actions";
+import { REMOVE_POST } from "../actions";
+import { ADD_COMMENT } from "../actions";
+import { EDIT_COMMENT } from "../actions";
+import { REMOVE_COMMENT } from "../actions";
+import { TOGGLE_POST_MODAL } from "../actions";
+import { TOGGLE_EDIT_POST_MODAL } from "../actions";
+import { TOGGLE_COMMENT_MODAL } from "../actions";
+import { TOGGLE_EDIT_COMMENT_MODAL } from "../actions";
 
 const initialState = {
     categories: [],
     posts: [],
-    comments: []
+    comments: [],
+    modal: {
+        postModal: false,
+        editPostModal: false,
+        commentModal: false,
+        editCommentModal: false
+    }
 };
 
 function Readable(state = initialState, action) {
@@ -30,12 +42,23 @@ function Readable(state = initialState, action) {
                 ...state,
                 posts: state.posts.concat(action.post)
             };
+        case EDIT_POST:
+            return {
+                ...state,
+                posts: state.posts.map(post => {
+                    if (post.id === action.post.id) {
+                        post = action.post
+                        return post
+                    }
+                    return post;
+                })
+            };
         case REMOVE_POST:
             return {
                 ...state,
-                posts: state.posts.filter((post) => {
-                        return post.id !== action.post.id
-                       })
+                posts: state.posts.filter(post => {
+                    return post.id !== action.post.id;
+                })
             };
         case VOTE_POST:
             return {
@@ -54,7 +77,6 @@ function Readable(state = initialState, action) {
                     ...state.comments,
                     [action.id]: action.comments
                 }
-                            
             };
 
         case ADD_COMMENT:
@@ -62,8 +84,22 @@ function Readable(state = initialState, action) {
                 ...state,
                 comments: {
                     ...state.comments,
-                    [action.comment.parentId]: state.comments[action.comment.parentId].concat(action.comment)
+                    [action.comment.parentId]: state.comments[
+                        action.comment.parentId
+                    ].concat(action.comment)
                 }
+            };
+
+        case EDIT_COMMENT:
+            return {
+                ...state,
+                posts: state.comments.map(comment => {
+                    if (comment.id === action.comment.id) {
+                        comment = action.comment
+                        return comment
+                    }
+                    return comment;
+                })
             };
 
         case REMOVE_COMMENT:
@@ -71,11 +107,46 @@ function Readable(state = initialState, action) {
                 ...state,
                 comments: {
                     ...state.comments,
-                    [action.comment.parentId]: state.comments[action.comment.parentId].filter((comment) => {
-                                                 return comment.id !== action.comment.id
-                                               })
+                    [action.comment.parentId]: state.comments[
+                        action.comment.parentId
+                    ].filter(comment => {
+                        return comment.id !== action.comment.id;
+                    })
                 }
             };
+
+        case TOGGLE_POST_MODAL:
+            return {
+                ...state,
+                modal: {
+                    postModal: action.isOpen
+                }
+            };
+
+        case TOGGLE_EDIT_POST_MODAL:
+            return {
+                ...state,
+                modal: {
+                    editPostModal: action.isOpen
+                }
+            };
+
+        case TOGGLE_COMMENT_MODAL:
+            return {
+                ...state,
+                modal: {
+                    commentModal: action.isOpen
+                }
+            };
+
+        case TOGGLE_EDIT_COMMENT_MODAL:
+            return {
+                ...state,
+                modal: {
+                    editCommentModal: action.isOpen
+                }
+            };
+
         default:
             return state;
     }

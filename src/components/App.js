@@ -1,13 +1,13 @@
-import React, { Component } from 'react';
-import '../App.css';
-import { Route, Switch, withRouter } from 'react-router-dom';
-import PostsView from './PostsView';
-import CategoryView from './CategoryView';
-import PostDetailView from './PostDetailView';
-import NavigationView from './NavigationView';
-import { connect } from 'react-redux';
-import { showCategories, showAllPosts } from '../actions';
-import * as ReadableAPI from '../utils/ReadableAPI';
+import React, { Component } from "react";
+import "../App.css";
+import { Route, Switch, withRouter } from "react-router-dom";
+import PostsView from "./PostsView";
+import CategoryView from "./CategoryView";
+import PostDetailView from "./PostDetailView";
+import NavigationView from "./NavigationView";
+import { connect } from "react-redux";
+import { showCategories, showAllPosts } from "../actions";
+import * as ReadableAPI from "../utils/ReadableAPI";
 
 class App extends Component {
     componentDidMount() {
@@ -22,12 +22,10 @@ class App extends Component {
         });
     }
 
-    
-
     render() {
         return (
-            <div className="App">      
-                <NavigationView />    
+            <div className="App">
+                <NavigationView />
                 <Switch>
                     <Route exact path="/" render={() => <PostsView />} />
                     <Route
@@ -38,7 +36,7 @@ class App extends Component {
                     <Route
                         exact
                         path="/category/post/:id"
-                        render={props => <PostDetailView {...props}/>}
+                        render={props => <PostDetailView {...props} />}
                     />
                 </Switch>
             </div>

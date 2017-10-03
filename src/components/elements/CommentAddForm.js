@@ -1,21 +1,10 @@
 import React from 'react'
 import { Field, reduxForm } from 'redux-form'
 
-let PostForm = props => {
+let CommentAddForm = props => {
   const { handleSubmit, pristine, reset, submitting } = props
   return (
     <form onSubmit={handleSubmit}>
-      <div>
-        <label>Title</label>
-        <div>
-          <Field
-            name="title"
-            component="input"
-            type="text"
-            placeholder="Title"
-          />
-        </div>
-      </div>
       <div>
         <label>Author</label>
         <div>
@@ -25,17 +14,6 @@ let PostForm = props => {
             type="text"
             placeholder="Author"
           />
-        </div>
-      </div>
-      <div>
-        <label>Select category</label>
-        <div>
-          <Field name="category" component="select">
-            <option />
-            <option value="react">React</option>
-            <option value="redux">Redux</option>
-            <option value="udacity">Udacity</option>
-          </Field>
         </div>
       </div>
       <div>
@@ -56,9 +34,9 @@ let PostForm = props => {
   )
 }
 
-PostForm = reduxForm({
+CommentAddForm = reduxForm({
   // a unique name for the form
-  form: 'post'
-})(PostForm)
+  form: 'comment'
+})(CommentAddForm)
 
-export default PostForm;
+export default CommentAddForm;

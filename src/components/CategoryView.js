@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
-import { connect } from 'react-redux';
-import PostElement from './elements/PostElement';
-import { Item, Header } from 'semantic-ui-react';
-import AddPostModalElement from './elements/AddPostModalElement';
+import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import PostElement from "./elements/PostElement";
+import { Item, Header } from "semantic-ui-react";
+import PostAddModalElement from "./elements/PostAddModalElement";
 
 class CategoryView extends Component {
     render() {
@@ -12,15 +12,13 @@ class CategoryView extends Component {
 
         return (
             <Item.Group>
-                <Header as='h3' dividing>
+                <Header as="h3" dividing>
                     Posts
-                <AddPostModalElement/>
+                    <PostAddModalElement />
                 </Header>
                 {posts
                     .filter(post => post.category === category)
-                    .map((post) =>
-                        <PostElement key={post.id} post={post} />
-                    )}
+                    .map(post => <PostElement key={post.id} post={post} />)}
                 <div />
             </Item.Group>
         );
@@ -28,7 +26,7 @@ class CategoryView extends Component {
 }
 
 function mapStateToProps(state) {
-    return {posts: state.reducer.posts};
+    return { posts: state.reducer.posts };
 }
 
 export default withRouter(connect(mapStateToProps)(CategoryView));

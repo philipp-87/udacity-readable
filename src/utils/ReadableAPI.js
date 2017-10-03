@@ -120,7 +120,7 @@ export const editComment = (id, data) =>
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            timestamp: data.timestamp,
+            timestamp: Date.now(),
             body: data.body
         })
     }).then(res => res.json());
