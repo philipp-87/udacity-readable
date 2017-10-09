@@ -5,6 +5,7 @@ import { SHOW_COMMENTS_BY_POST_ID } from "../actions";
 import { ADD_POST } from "../actions";
 import { EDIT_POST } from "../actions";
 import { REMOVE_POST } from "../actions";
+import { SORT_POSTS } from "../actions";
 import { ADD_COMMENT } from "../actions";
 import { EDIT_COMMENT } from "../actions";
 import { REMOVE_COMMENT } from "../actions";
@@ -13,6 +14,7 @@ import { TOGGLE_POST_MODAL } from "../actions";
 import { TOGGLE_EDIT_POST_MODAL } from "../actions";
 import { TOGGLE_COMMENT_MODAL } from "../actions";
 import { TOGGLE_EDIT_COMMENT_MODAL } from "../actions";
+var _ = require("lodash");
 
 const initialState = {
     categories: [],
@@ -60,6 +62,11 @@ function Readable(state = initialState, action) {
                 posts: state.posts.filter(post => {
                     return post.id !== action.post.id;
                 })
+            };
+        case SORT_POSTS:
+            return {
+                ...state,
+                posts: _.sortBy(state.posts, [action.sortType]).reverse(state.posts)
             };
         case VOTE_POST:
             return {

@@ -6,6 +6,7 @@ export const SHOW_COMMENTS_BY_POST_ID = "SHOW_COMMENTS_BY_POST_ID";
 export const ADD_POST = "ADD_POST";
 export const EDIT_POST = "EDIT_POST";
 export const REMOVE_POST = "REMOVE_POST";
+export const SORT_POSTS = "SORT_POSTS";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const EDIT_COMMENT = "EDIT_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
@@ -68,6 +69,13 @@ export function removePost(post) {
     return {
         type: REMOVE_POST,
         post
+    };
+}
+
+export function sortPosts(sortType) {
+    return {
+        type: SORT_POSTS,
+        sortType
     };
 }
 
