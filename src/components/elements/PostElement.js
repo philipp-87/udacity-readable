@@ -63,8 +63,15 @@ class PostElement extends Component {
         return (
             <Item>
             <Item.Content>
-                <Item.Header as='a'>
+                <Item.Header>
+                    <Link
+                        to={{
+                            pathname: `/category/post/${post.id}`,
+                            state: { comments: newComments, post: post }
+                        }}
+                    >
                     {post.title}
+                    </Link>
                 </Item.Header>
                 <Item.Meta>
                     {new Date(post.timestamp).toString()}

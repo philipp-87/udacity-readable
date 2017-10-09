@@ -9,6 +9,7 @@ export const REMOVE_POST = "REMOVE_POST";
 export const ADD_COMMENT = "ADD_COMMENT";
 export const EDIT_COMMENT = "EDIT_COMMENT";
 export const REMOVE_COMMENT = "REMOVE_COMMENT";
+export const VOTE_COMMENT = "VOTE_COMMENT";
 export const TOGGLE_POST_MODAL = "TOGGLE_POST_MODAL";
 export const TOGGLE_EDIT_POST_MODAL = "TOGGLE_EDIT_POST_MODAL";
 export const TOGGLE_COMMENT_MODAL = "TOGGLE_COMMENT_MODAL";
@@ -92,6 +93,13 @@ export function editComment(comment) {
 export function removeComment(comment) {
     return {
         type: REMOVE_COMMENT,
+        comment
+    };
+}
+
+export function voteComment(comment) {
+    return {
+        type: VOTE_COMMENT,
         comment
     };
 }

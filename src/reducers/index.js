@@ -8,6 +8,7 @@ import { REMOVE_POST } from "../actions";
 import { ADD_COMMENT } from "../actions";
 import { EDIT_COMMENT } from "../actions";
 import { REMOVE_COMMENT } from "../actions";
+import { VOTE_COMMENT } from "../actions";
 import { TOGGLE_POST_MODAL } from "../actions";
 import { TOGGLE_EDIT_POST_MODAL } from "../actions";
 import { TOGGLE_COMMENT_MODAL } from "../actions";
@@ -93,13 +94,16 @@ function Readable(state = initialState, action) {
         case EDIT_COMMENT:
             return {
                 ...state,
-                posts: state.comments.map(comment => {
+                comments: {
+                    ...state.comments,
+                    [action.comment.parentId]: state.comments[action.comment.parentId].map(comment => {
                     if (comment.id === action.comment.id) {
                         comment = action.comment
                         return comment
                     }
                     return comment;
                 })
+                }
             };
 
         case REMOVE_COMMENT:
@@ -112,6 +116,20 @@ function Readable(state = initialState, action) {
                     ].filter(comment => {
                         return comment.id !== action.comment.id;
                     })
+                }
+            };
+
+        case VOTE_COMMENT:
+            return {
+                ...state,
+                comments: {
+                    ...state.comments,
+                    [action.comment.parentId]: state.comments[action.comment.parentId].map(comment => {
+                    if (comment.id === action.comment.id) {
+                        return { ...action.comment };
+                    }
+                    return comment;
+                })
                 }
             };
 

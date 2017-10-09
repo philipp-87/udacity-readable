@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Button, Modal, Icon } from 'semantic-ui-react';
 import { editComment, toggleEditCommentModal } from '../../actions';
-import CommentAddForm from "./CommentAddForm";
+import CommentEditForm from "./CommentEditForm";
 import * as ReadableAPI from '../../utils/ReadableAPI';
 
 class CommentEditModalElement extends Component {
 
     submitComment = values => {
-        ReadableAPI.editPost(this.props.comment.id, {
+        ReadableAPI.editComment(this.props.comment.id, {
             body: values.body
         }).then(comment => {
             console.log(comment);
@@ -33,7 +33,7 @@ class CommentEditModalElement extends Component {
                 </Modal.Header>
                 <Modal.Content>
                   <Modal.Description>
-                    <CommentAddForm onSubmit={this.submitComment} />
+                    <CommentEditForm onSubmit={this.submitComment} />
                   </Modal.Description>
                 </Modal.Content>
             </Modal>

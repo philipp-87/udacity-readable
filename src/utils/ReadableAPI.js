@@ -108,7 +108,7 @@ export const voteComment = (id, data) =>
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            option: data.option
+            option: data
         })
     }).then(res => res.json());
 

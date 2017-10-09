@@ -1,11 +1,12 @@
 import React, { Component } from "react";
 import PostElement from "./elements/PostElement";
-import { Comment, Header, Button} from "semantic-ui-react";
+import { Comment, Header, Button, Label, Item} from "semantic-ui-react";
 import { connect } from "react-redux";
-import { removeComment, addCommentAsync, toggleCommentModal, toggleEditCommentModal } from "../actions";
+import { removeComment, addCommentAsync, toggleCommentModal, toggleEditCommentModal, voteComment } from "../actions";
 import CommentAddModalElement from "./elements/CommentAddModalElement";
 import CommentEditModalElement from "./elements/CommentEditModalElement";
 import * as ReadableAPI from "../utils/ReadableAPI";
+var _ = require("lodash");
 
 class PostDetailView extends Component {
 
@@ -24,18 +25,36 @@ class PostDetailView extends Component {
         });
     }
 
+    voteUp(id) {
+        const { voteForComment } = this.props;
+        ReadableAPI.voteComment(id, 'upVote').then(comment => {
+            voteForComment(comment);
+        });
+    }
+
+    voteDown(id) {
+        const { voteForComment } = this.props;
+        ReadableAPI.voteComment(id, 'downVote').then(comment => {
+            voteForComment(comment);
+        });
+    }
+
     render() {
         let post = this.props.location.state.post;
         const { comments, isOpenCommentModal, isOpenEditCommentModal } = this.props;
         let id = post.id;
         let newComments = comments[id];
+        newComments = _.sortBy(newComments, ['voteScore']);
+        newComments = _.reverse(newComments);
 
         return (
             <div>
-                <Header as="h3" dividing>
-                    Post
-                </Header>
-                <PostElement post={post} />
+                <Item.Group>
+                    <Header as="h3" dividing>
+                        Post
+                    </Header>
+                    <PostElement key={post.id} post={post} />
+                </Item.Group>
                 <Comment.Group>
                     <Header as="h3" dividing>
                         Comments
@@ -55,6 +74,9 @@ class PostDetailView extends Component {
                                                 comment.timestamp
                                             ).toString()}
                                         </div>
+                                        <Label icon='star' content={comment.voteScore} />
+                                        <Button size='tiny' onClick={() => this.voteUp(comment.id)} icon='chevron up' compact/>
+                                        <Button size='tiny' onClick={() => this.voteDown(comment.id)} icon='chevron down' compact/>
                                         <Button size='tiny' icon='edit' onClick={() => this.toggleEditCommentModal()} compact/>
                                         <CommentEditModalElement open={isOpenEditCommentModal} comment={comment}/>
                                         <Button size='tiny' color='red' onClick={() => this.deleteComment(comment)} icon='remove' compact/>
@@ -75,6 +97,7 @@ function mapDispatchToProps(dispatch) {
         createComment: data => dispatch(addCommentAsync(data)),
         toggleCommentModal: data => dispatch(toggleCommentModal(data)),
         toggleEditCommentModal: data => dispatch(toggleEditCommentModal(data)),
+        voteForComment: data => dispatch(voteComment(data))
     };
 }
 
