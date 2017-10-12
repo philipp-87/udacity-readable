@@ -16,7 +16,6 @@ export const TOGGLE_EDIT_POST_MODAL = "TOGGLE_EDIT_POST_MODAL";
 export const TOGGLE_COMMENT_MODAL = "TOGGLE_COMMENT_MODAL";
 export const TOGGLE_EDIT_COMMENT_MODAL = "TOGGLE_EDIT_COMMENT_MODAL";
 
-
 export function showCategories(categories) {
     return {
         type: SHOW_CATEGORIES,
@@ -113,10 +112,10 @@ export function voteComment(comment) {
 }
 
 export function togglePostModal(isOpen) {
-    if(isOpen === false){
-        isOpen = true
+    if (isOpen === false) {
+        isOpen = true;
     } else {
-        isOpen = false
+        isOpen = false;
     }
     return {
         type: TOGGLE_POST_MODAL,
@@ -125,10 +124,10 @@ export function togglePostModal(isOpen) {
 }
 
 export function toggleEditPostModal(isOpen) {
-    if(isOpen === false){
-        isOpen = true
+    if (isOpen === false) {
+        isOpen = true;
     } else {
-        isOpen = false
+        isOpen = false;
     }
     return {
         type: TOGGLE_EDIT_POST_MODAL,
@@ -137,10 +136,10 @@ export function toggleEditPostModal(isOpen) {
 }
 
 export function toggleCommentModal(isOpen) {
-    if(isOpen === false){
-        isOpen = true
+    if (isOpen === false) {
+        isOpen = true;
     } else {
-        isOpen = false
+        isOpen = false;
     }
     return {
         type: TOGGLE_COMMENT_MODAL,
@@ -149,10 +148,10 @@ export function toggleCommentModal(isOpen) {
 }
 
 export function toggleEditCommentModal(isOpen) {
-    if(isOpen === false){
-        isOpen = true
+    if (isOpen === false) {
+        isOpen = true;
     } else {
-        isOpen = false
+        isOpen = false;
     }
     return {
         type: TOGGLE_EDIT_COMMENT_MODAL,

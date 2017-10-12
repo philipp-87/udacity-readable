@@ -14,7 +14,6 @@ import { TOGGLE_POST_MODAL } from "../actions";
 import { TOGGLE_EDIT_POST_MODAL } from "../actions";
 import { TOGGLE_COMMENT_MODAL } from "../actions";
 import { TOGGLE_EDIT_COMMENT_MODAL } from "../actions";
-var _ = require("lodash");
 
 const initialState = {
     categories: [],
@@ -25,7 +24,8 @@ const initialState = {
         editPostModal: false,
         commentModal: false,
         editCommentModal: false
-    }
+    },
+    postsSortType: "voteScore"
 };
 
 function Readable(state = initialState, action) {
@@ -50,8 +50,8 @@ function Readable(state = initialState, action) {
                 ...state,
                 posts: state.posts.map(post => {
                     if (post.id === action.post.id) {
-                        post = action.post
-                        return post
+                        post = action.post;
+                        return post;
                     }
                     return post;
                 })
@@ -66,7 +66,7 @@ function Readable(state = initialState, action) {
         case SORT_POSTS:
             return {
                 ...state,
-                posts: _.sortBy(state.posts, [action.sortType]).reverse(state.posts)
+                postsSortType: action.sortType
             };
         case VOTE_POST:
             return {
@@ -103,13 +103,15 @@ function Readable(state = initialState, action) {
                 ...state,
                 comments: {
                     ...state.comments,
-                    [action.comment.parentId]: state.comments[action.comment.parentId].map(comment => {
-                    if (comment.id === action.comment.id) {
-                        comment = action.comment
-                        return comment
-                    }
-                    return comment;
-                })
+                    [action.comment.parentId]: state.comments[
+                        action.comment.parentId
+                    ].map(comment => {
+                        if (comment.id === action.comment.id) {
+                            comment = action.comment;
+                            return comment;
+                        }
+                        return comment;
+                    })
                 }
             };
 
@@ -131,12 +133,14 @@ function Readable(state = initialState, action) {
                 ...state,
                 comments: {
                     ...state.comments,
-                    [action.comment.parentId]: state.comments[action.comment.parentId].map(comment => {
-                    if (comment.id === action.comment.id) {
-                        return { ...action.comment };
-                    }
-                    return comment;
-                })
+                    [action.comment.parentId]: state.comments[
+                        action.comment.parentId
+                    ].map(comment => {
+                        if (comment.id === action.comment.id) {
+                            return { ...action.comment };
+                        }
+                        return comment;
+                    })
                 }
             };
 

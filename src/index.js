@@ -1,21 +1,21 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './components/App';
-import registerServiceWorker from './registerServiceWorker';
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import { reducer as formReducer } from 'redux-form'
-import thunk from 'redux-thunk';
-import reducer from './reducers';
-import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
-import 'semantic-ui-css/semantic.min.css';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./components/App";
+import registerServiceWorker from "./registerServiceWorker";
+import { createStore, combineReducers, applyMiddleware, compose } from "redux";
+import { reducer as formReducer } from "redux-form";
+import thunk from "redux-thunk";
+import reducer from "./reducers";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import "semantic-ui-css/semantic.min.css";
 
 const logger = store => next => action => {
     console.group(action.type);
-    console.info('dispatching', action);
+    console.info("dispatching", action);
     let result = next(action);
-    console.log('next state', store.getState());
+    console.log("next state", store.getState());
     console.groupEnd(action.type);
     return result;
 };
@@ -23,11 +23,14 @@ const logger = store => next => action => {
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const rootReducer = combineReducers({
-  form: formReducer,
-  reducer: reducer
-})
+    form: formReducer,
+    reducer: reducer
+});
 
-const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunk, logger)));
+const store = createStore(
+    rootReducer,
+    composeEnhancers(applyMiddleware(thunk, logger))
+);
 
 ReactDOM.render(
     <Provider store={store}>
@@ -35,6 +38,6 @@ ReactDOM.render(
             <App />
         </BrowserRouter>
     </Provider>,
-    document.getElementById('root')
+    document.getElementById("root")
 );
 registerServiceWorker();

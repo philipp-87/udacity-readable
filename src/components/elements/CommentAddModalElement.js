@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { Button, Modal, Icon } from 'semantic-ui-react';
-import { addCommentAsync, toggleCommentModal } from '../../actions';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { Button, Modal, Icon } from "semantic-ui-react";
+import { addCommentAsync, toggleCommentModal } from "../../actions";
 import CommentAddForm from "./CommentAddForm";
 
 class CommentAddModalElement extends Component {
-
     submitComment = values => {
         const { createComment, postId } = this.props;
         createComment({
@@ -17,8 +16,8 @@ class CommentAddModalElement extends Component {
         });
     };
 
-    toggleModal(){
-        this.props.toggleCommentModal(this.props.isOpenCommentModal)
+    toggleModal() {
+        this.props.toggleCommentModal(this.props.isOpenCommentModal);
     }
 
     render() {
@@ -26,14 +25,18 @@ class CommentAddModalElement extends Component {
             <Modal open={this.props.open}>
                 <Modal.Header>
                     Add Comment
-                    <Button style={{float: 'right'}} onClick={() => this.toggleModal()} icon>
-                        <Icon name='close'/>
+                    <Button
+                        style={{ float: "right" }}
+                        onClick={() => this.toggleModal()}
+                        icon
+                    >
+                        <Icon name="close" />
                     </Button>
                 </Modal.Header>
                 <Modal.Content>
-                  <Modal.Description>
-                    <CommentAddForm onSubmit={this.submitComment} />
-                  </Modal.Description>
+                    <Modal.Description>
+                        <CommentAddForm onSubmit={this.submitComment} />
+                    </Modal.Description>
                 </Modal.Content>
             </Modal>
         );
@@ -43,7 +46,7 @@ class CommentAddModalElement extends Component {
 function mapDispatchToProps(dispatch) {
     return {
         createComment: data => dispatch(addCommentAsync(data)),
-        toggleCommentModal: data => dispatch(toggleCommentModal(data)),
+        toggleCommentModal: data => dispatch(toggleCommentModal(data))
     };
 }
 
@@ -53,4 +56,6 @@ function mapStateToProps(state) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(CommentAddModalElement);
+export default connect(mapStateToProps, mapDispatchToProps)(
+    CommentAddModalElement
+);
