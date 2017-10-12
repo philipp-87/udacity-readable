@@ -20,7 +20,11 @@ class PostsView extends Component {
                 <Item.Group divided>
                     {sortedPosts &&
                         sortedPosts.map(post => (
-                            <PostElement key={post.id} post={post} />
+                            <PostElement
+                                key={post.id}
+                                post={post}
+                                showControl={true}
+                            />
                         ))}
                 </Item.Group>
                 <PostAddModalElement open={isOpenPostModal} />

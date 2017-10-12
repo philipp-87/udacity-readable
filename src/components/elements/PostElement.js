@@ -59,8 +59,82 @@ class PostElement extends Component {
         this.props.toggleEditPostModal(this.props.isOpenEditPostModal);
     }
 
-    render() {
+    renderControls() {
         const { post, comments, isOpenEditPostModal } = this.props;
+        let id = post.id;
+        let newComments = comments[id];
+
+        if (this.props.showControl) {
+            return (
+                <Item.Extra>
+                    <Label content={post.category} />
+                    <Label icon="star" content={post.voteScore} />
+                    <Button
+                        size="tiny"
+                        onClick={() => this.voteUp()}
+                        icon="chevron up"
+                        compact
+                    />
+                    <Button
+                        size="tiny"
+                        onClick={() => this.voteDown()}
+                        icon="chevron down"
+                        compact
+                    />
+                    <Link
+                        to={{
+                            pathname: `/category/post/${post.id}`,
+                            state: {
+                                comments: newComments,
+                                post: post
+                            }
+                        }}
+                    >
+                        <Button
+                            size="tiny"
+                            content={
+                                !_.isUndefined(newComments) ? (
+                                    newComments.length
+                                ) : (
+                                    "0"
+                                )
+                            }
+                            icon="comments"
+                            labelPosition="left"
+                            compact
+                        />
+                    </Link>
+                    <Button
+                        size="tiny"
+                        icon="edit"
+                        onClick={() => this.toggleModal()}
+                        compact
+                    />
+                    <Button
+                        size="tiny"
+                        color="red"
+                        onClick={() => this.deletePost()}
+                        icon="remove"
+                        compact
+                    />
+                    <PostEditModalElement
+                        post={post}
+                        open={isOpenEditPostModal}
+                    />
+                </Item.Extra>
+            );
+        } else {
+            return (
+                <Item.Extra>
+                    <Label content={post.category} />
+                    <Label icon="star" content={post.voteScore} />
+                </Item.Extra>
+            );
+        }
+    }
+
+    render() {
+        const { post, comments } = this.props;
         let id = post.id;
         let newComments = comments[id];
 
@@ -84,59 +158,7 @@ class PostElement extends Component {
                         <br />
                         <p>Author: {post.author}</p>
                     </Item.Description>
-                    <Item.Extra>
-                        <Label content={post.category} />
-                        <Label icon="star" content={post.voteScore} />
-                        <Button
-                            size="tiny"
-                            onClick={() => this.voteUp()}
-                            icon="chevron up"
-                            compact
-                        />
-                        <Button
-                            size="tiny"
-                            onClick={() => this.voteDown()}
-                            icon="chevron down"
-                            compact
-                        />
-                        <Link
-                            to={{
-                                pathname: `/category/post/${post.id}`,
-                                state: { comments: newComments, post: post }
-                            }}
-                        >
-                            <Button
-                                size="tiny"
-                                content={
-                                    !_.isUndefined(newComments) ? (
-                                        newComments.length
-                                    ) : (
-                                        "0"
-                                    )
-                                }
-                                icon="comments"
-                                labelPosition="left"
-                                compact
-                            />
-                        </Link>
-                        <Button
-                            size="tiny"
-                            icon="edit"
-                            onClick={() => this.toggleModal()}
-                            compact
-                        />
-                        <Button
-                            size="tiny"
-                            color="red"
-                            onClick={() => this.deletePost()}
-                            icon="remove"
-                            compact
-                        />
-                        <PostEditModalElement
-                            post={post}
-                            open={isOpenEditPostModal}
-                        />
-                    </Item.Extra>
+                    {this.renderControls()}
                 </Item.Content>
             </Item>
         );

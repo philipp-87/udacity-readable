@@ -22,7 +22,13 @@ class CategoryView extends Component {
                 <Item.Group divided>
                     {sortedPosts
                         .filter(post => post.category === category)
-                        .map(post => <PostElement key={post.id} post={post} />)}
+                        .map(post => (
+                            <PostElement
+                                key={post.id}
+                                post={post}
+                                showControl={true}
+                            />
+                        ))}
                     <div />
                 </Item.Group>
                 <PostAddModalElement open={isOpenPostModal} />
