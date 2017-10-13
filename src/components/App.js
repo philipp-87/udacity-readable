@@ -30,12 +30,12 @@ class App extends Component {
                     <Route exact path="/" render={() => <PostsView />} />
                     <Route
                         exact
-                        path="/category/:name"
+                        path="/:name"
                         render={props => <CategoryView {...props} />}
                     />
                     <Route
                         exact
-                        path="/category/post/:id"
+                        path="/:category/:id"
                         render={props => <PostDetailView {...props} />}
                     />
                 </Switch>

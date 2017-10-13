@@ -83,7 +83,7 @@ class PostElement extends Component {
                     />
                     <Link
                         to={{
-                            pathname: `/category/post/${post.id}`,
+                            pathname: `/${post.category}/${post.id}`,
                             state: {
                                 comments: newComments,
                                 post: post
@@ -144,7 +144,7 @@ class PostElement extends Component {
                     <Item.Header>
                         <Link
                             to={{
-                                pathname: `/category/post/${post.id}`,
+                                pathname: `/${post.category}/${post.id}`,
                                 state: { comments: newComments, post: post }
                             }}
                         >

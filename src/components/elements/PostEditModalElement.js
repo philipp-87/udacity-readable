@@ -41,8 +41,8 @@ class PostEditModalElement extends Component {
                 <Modal.Content>
                     <Modal.Description>
                         <PostEditForm
-                            title={this.props.title}
-                            body={this.props.body}
+                            title={this.props.post.title}
+                            body={this.props.post.body}
                             onSubmit={this.submitPost}
                         />
                     </Modal.Description>

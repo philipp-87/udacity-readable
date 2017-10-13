@@ -1,12 +1,11 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 
 const validate = values => {
     const errors = {};
     if (!values.title) {
         errors.title = "Required";
-    } else if (values.title.length > 15) {
-        errors.title = "Must be 15 characters or less";
     }
     if (!values.body) {
         errors.body = "Required";
@@ -49,7 +48,9 @@ const renderTextAreaField = ({
 );
 
 let PostEditForm = props => {
-    const { handleSubmit, pristine, reset, submitting } = props;
+    const { handleSubmit, pristine, reset, submitting, body, title } = props;
+    console.log(title);
+    console.log(body);
     return (
         <form onSubmit={handleSubmit}>
             <Field
@@ -79,10 +80,19 @@ let PostEditForm = props => {
     );
 };
 
+function mapStateToProps(state, props) {
+    return {
+        initialValues: {
+            title: props.title,
+            body: props.body
+        }
+    };
+}
+
 PostEditForm = reduxForm({
     // a unique name for the form
     form: "postEdit",
     validate
 })(PostEditForm);
 
-export default PostEditForm;
+export default connect(mapStateToProps)(PostEditForm);

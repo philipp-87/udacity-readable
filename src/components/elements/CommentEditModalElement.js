@@ -38,7 +38,10 @@ class CommentEditModalElement extends Component {
                 </Modal.Header>
                 <Modal.Content>
                     <Modal.Description>
-                        <CommentEditForm onSubmit={this.submitComment} />
+                        <CommentEditForm
+                            onSubmit={this.submitComment}
+                            body={this.props.comment.body}
+                        />
                     </Modal.Description>
                 </Modal.Content>
             </Modal>

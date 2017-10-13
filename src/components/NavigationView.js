@@ -19,7 +19,7 @@ class NavigationView extends Component {
                         <Menu.Item name={category.name} key={index}>
                             <Link
                                 to={{
-                                    pathname: `/category/${category.name}`,
+                                    pathname: `/${category.name}`,
                                     state: { category: category.name }
                                 }}
                             >

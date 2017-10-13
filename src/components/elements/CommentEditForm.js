@@ -1,5 +1,6 @@
 import React from "react";
 import { Field, reduxForm } from "redux-form";
+import { connect } from "react-redux";
 
 const validate = values => {
     const errors = {};
@@ -51,10 +52,18 @@ let CommentEditForm = props => {
     );
 };
 
+function mapStateToProps(state, props) {
+    return {
+        initialValues: {
+            body: props.body
+        }
+    };
+}
+
 CommentEditForm = reduxForm({
     // a unique name for the form
     form: "commentEdit",
     validate
 })(CommentEditForm);
 
-export default CommentEditForm;
+export default connect(mapStateToProps)(CommentEditForm);
