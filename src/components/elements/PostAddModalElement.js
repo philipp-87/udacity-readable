@@ -8,7 +8,6 @@ var _ = require("lodash");
 
 class PostAddModalElement extends Component {
     submitPost = values => {
-        console.log(values);
         ReadableAPI.createPost({
             title: values.title,
             owner: values.author,
@@ -28,7 +27,6 @@ class PostAddModalElement extends Component {
     }
 
     render() {
-        console.log(this.props);
         const { categories } = this.props;
         categories.map(category => {
             category["key"] = category.name;

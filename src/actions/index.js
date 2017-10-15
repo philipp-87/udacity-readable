@@ -5,6 +5,7 @@ export const VOTE_POST = "VOTE_POST";
 export const SHOW_COMMENTS_BY_POST_ID = "SHOW_COMMENTS_BY_POST_ID";
 export const ADD_POST = "ADD_POST";
 export const EDIT_POST = "EDIT_POST";
+export const GET_POST = "GET_POST";
 export const REMOVE_POST = "REMOVE_POST";
 export const SORT_POSTS = "SORT_POSTS";
 export const ADD_COMMENT = "ADD_COMMENT";
@@ -22,6 +23,10 @@ export function showCategories(categories) {
         categories
     };
 }
+export const fetchCategories = () => dispatch =>
+    ReadableAPI.getCategories().then(categories =>
+        dispatch(showCategories(categories))
+    );
 
 export function showAllPosts(posts) {
     return {
@@ -30,12 +35,25 @@ export function showAllPosts(posts) {
     };
 }
 
+export const fetchAllPosts = () => dispatch =>
+    ReadableAPI.getPosts().then(posts => dispatch(showAllPosts(posts)));
+
 export function votePost(post) {
     return {
         type: VOTE_POST,
         post
     };
 }
+
+export function getPost(post) {
+    return {
+        type: GET_POST,
+        post
+    };
+}
+
+export const fetchPost = id => dispatch =>
+    ReadableAPI.getPost(id).then(post => dispatch(getPost(post)));
 
 export function showComments(comments, id) {
     return {
@@ -123,7 +141,9 @@ export function togglePostModal(isOpen) {
     };
 }
 
-export function toggleEditPostModal(isOpen) {
+export function toggleEditPostModal(isOpen, post) {
+    console.log(isOpen);
+    console.log(post);
     if (isOpen === false) {
         isOpen = true;
     } else {
@@ -131,7 +151,8 @@ export function toggleEditPostModal(isOpen) {
     }
     return {
         type: TOGGLE_EDIT_POST_MODAL,
-        isOpen
+        isOpen,
+        post
     };
 }
 

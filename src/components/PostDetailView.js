@@ -6,7 +6,8 @@ import {
     removeComment,
     addCommentAsync,
     toggleEditCommentModal,
-    voteComment
+    voteComment,
+    fetchPost
 } from "../actions";
 import CommentAddModalElement from "./elements/CommentAddModalElement";
 import CommentEditModalElement from "./elements/CommentEditModalElement";
@@ -15,6 +16,11 @@ import CommentsSubHeader from "./elements/CommentsSubHeader";
 var _ = require("lodash");
 
 class PostDetailView extends Component {
+    // componentWillMount() {
+    //     const { fetchPost } = this.props;
+    //     fetchPost(this.props.location.state.post.id);
+    // }
+
     toggleEditCommentModal() {
         this.props.toggleEditCommentModal(this.props.isOpenEditCommentModal);
     }
@@ -41,7 +47,16 @@ class PostDetailView extends Component {
     }
 
     render() {
+        const { posts } = this.props;
         let post = this.props.location.state.post;
+
+        posts.map(postFromStore => {
+            if (postFromStore.id === this.props.location.state.post.id) {
+                post = postFromStore;
+            }
+            return post;
+        });
+
         const {
             comments,
             isOpenCommentModal,
@@ -133,12 +148,14 @@ function mapDispatchToProps(dispatch) {
         deleteComment: data => dispatch(removeComment(data)),
         createComment: data => dispatch(addCommentAsync(data)),
         toggleEditCommentModal: data => dispatch(toggleEditCommentModal(data)),
-        voteForComment: data => dispatch(voteComment(data))
+        voteForComment: data => dispatch(voteComment(data)),
+        fetchPost: data => dispatch(fetchPost(data))
     };
 }
 
 function mapStateToProps(state) {
     return {
+        posts: state.reducer.posts,
         comments: state.reducer.comments,
         isOpenCommentModal: state.reducer.modal.commentModal,
         isOpenEditCommentModal: state.reducer.modal.editCommentModal

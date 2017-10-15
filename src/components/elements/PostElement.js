@@ -9,7 +9,6 @@ import {
     toggleEditPostModal
 } from "../../actions";
 import * as ReadableAPI from "../../utils/ReadableAPI";
-import PostEditModalElement from "./PostEditModalElement";
 var _ = require("lodash");
 
 class PostElement extends Component {
@@ -56,81 +55,70 @@ class PostElement extends Component {
     }
 
     toggleModal() {
-        this.props.toggleEditPostModal(this.props.isOpenEditPostModal);
+        let post = this.props.post;
+        console.log(post);
+        this.props.toggleEditPostModal(this.props.isOpenEditPostModal, post);
     }
 
     renderControls() {
-        const { post, comments, isOpenEditPostModal } = this.props;
+        const { post, comments } = this.props;
         let id = post.id;
         let newComments = comments[id];
 
-        if (this.props.showControl) {
-            return (
-                <Item.Extra>
-                    <Label content={post.category} />
-                    <Label icon="star" content={post.voteScore} />
+        return (
+            <Item.Extra>
+                <Label content={post.category} />
+                <Label icon="star" content={post.voteScore} />
+                <Button
+                    size="tiny"
+                    onClick={() => this.voteUp()}
+                    icon="chevron up"
+                    compact
+                />
+                <Button
+                    size="tiny"
+                    onClick={() => this.voteDown()}
+                    icon="chevron down"
+                    compact
+                />
+                <Link
+                    to={{
+                        pathname: `/${post.category}/${post.id}`,
+                        state: {
+                            comments: newComments,
+                            post: post
+                        }
+                    }}
+                >
                     <Button
                         size="tiny"
-                        onClick={() => this.voteUp()}
-                        icon="chevron up"
+                        content={
+                            !_.isUndefined(newComments) ? (
+                                newComments.length
+                            ) : (
+                                "0"
+                            )
+                        }
+                        icon="comments"
+                        labelPosition="left"
                         compact
                     />
-                    <Button
-                        size="tiny"
-                        onClick={() => this.voteDown()}
-                        icon="chevron down"
-                        compact
-                    />
-                    <Link
-                        to={{
-                            pathname: `/${post.category}/${post.id}`,
-                            state: {
-                                comments: newComments,
-                                post: post
-                            }
-                        }}
-                    >
-                        <Button
-                            size="tiny"
-                            content={
-                                !_.isUndefined(newComments) ? (
-                                    newComments.length
-                                ) : (
-                                    "0"
-                                )
-                            }
-                            icon="comments"
-                            labelPosition="left"
-                            compact
-                        />
-                    </Link>
-                    <Button
-                        size="tiny"
-                        icon="edit"
-                        onClick={() => this.toggleModal()}
-                        compact
-                    />
-                    <Button
-                        size="tiny"
-                        color="red"
-                        onClick={() => this.deletePost()}
-                        icon="remove"
-                        compact
-                    />
-                    <PostEditModalElement
-                        post={post}
-                        open={isOpenEditPostModal}
-                    />
-                </Item.Extra>
-            );
-        } else {
-            return (
-                <Item.Extra>
-                    <Label content={post.category} />
-                    <Label icon="star" content={post.voteScore} />
-                </Item.Extra>
-            );
-        }
+                </Link>
+                <Button
+                    size="tiny"
+                    icon="edit"
+                    onClick={() => this.toggleModal()}
+                    compact
+                />
+                <Button
+                    size="tiny"
+                    color="red"
+                    onClick={() => this.deletePost()}
+                    icon="remove"
+                    compact
+                />
+            </Item.Extra>
+        );
     }
 
     render() {
@@ -177,7 +165,8 @@ function mapDispatchToProps(dispatch) {
 function mapStateToProps(state) {
     return {
         comments: state.reducer.comments,
-        isOpenEditPostModal: state.reducer.modal.editPostModal
+        posts: state.reducer.posts,
+        isOpenEditPostModal: state.reducer.modal.editPostModal.status
     };
 }
 

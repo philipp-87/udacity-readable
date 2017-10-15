@@ -4,6 +4,7 @@ import { VOTE_POST } from "../actions";
 import { SHOW_COMMENTS_BY_POST_ID } from "../actions";
 import { ADD_POST } from "../actions";
 import { EDIT_POST } from "../actions";
+import { GET_POST } from "../actions";
 import { REMOVE_POST } from "../actions";
 import { SORT_POSTS } from "../actions";
 import { ADD_COMMENT } from "../actions";
@@ -21,7 +22,10 @@ const initialState = {
     comments: [],
     modal: {
         postModal: false,
-        editPostModal: false,
+        editPostModal: {
+            status: false,
+            post: null
+        },
         commentModal: false,
         editCommentModal: false
     },
@@ -44,6 +48,13 @@ function Readable(state = initialState, action) {
             return {
                 ...state,
                 posts: state.posts.concat(action.post)
+            };
+        case GET_POST:
+            return {
+                ...state,
+                posts: state.posts.filter(post => {
+                    return post.id === action.post.id;
+                })
             };
         case EDIT_POST:
             return {
@@ -156,7 +167,10 @@ function Readable(state = initialState, action) {
             return {
                 ...state,
                 modal: {
-                    editPostModal: action.isOpen
+                    editPostModal: {
+                        status: action.isOpen,
+                        post: action.post
+                    }
                 }
             };
 

@@ -4,6 +4,7 @@ import { Button, Modal, Icon } from "semantic-ui-react";
 import { toggleEditPostModal, editPost } from "../../actions";
 import * as ReadableAPI from "../../utils/ReadableAPI";
 import PostEditForm from "./PostEditForm";
+var _ = require("lodash");
 
 class PostEditModalElement extends Component {
     submitPost = values => {
@@ -22,10 +23,26 @@ class PostEditModalElement extends Component {
     };
 
     toggleModal() {
-        this.props.toggleEditPostModal(this.props.isOpenEditPostModal);
+        this.props.toggleEditPostModal(this.props.isOpenEditPostModal, null);
+    }
+
+    getTitle(post) {
+        if (_.isEmpty(post)) {
+            return null;
+        }
+        return post.title;
+    }
+
+    getBody(post) {
+        if (_.isEmpty(post)) {
+            return null;
+        }
+        return post.body;
     }
 
     render() {
+        let post = this.props.editPost;
+
         return (
             <Modal open={this.props.open}>
                 <Modal.Header>
@@ -41,8 +58,8 @@ class PostEditModalElement extends Component {
                 <Modal.Content>
                     <Modal.Description>
                         <PostEditForm
-                            title={this.props.post.title}
-                            body={this.props.post.body}
+                            title={this.getTitle(post)}
+                            body={this.getBody(post)}
                             onSubmit={this.submitPost}
                         />
                     </Modal.Description>
@@ -61,7 +78,9 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     return {
-        isOpenEditPostModal: state.reducer.modal.editPostModal
+        posts: state.reducer.posts,
+        isOpenEditPostModal: state.reducer.modal.editPostModal.status,
+        editPost: state.reducer.modal.editPostModal.post
     };
 }
 

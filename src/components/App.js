@@ -6,20 +6,14 @@ import CategoryView from "./CategoryView";
 import PostDetailView from "./PostDetailView";
 import NavigationView from "./NavigationView";
 import { connect } from "react-redux";
-import { showCategories, showAllPosts } from "../actions";
-import * as ReadableAPI from "../utils/ReadableAPI";
+import { fetchCategories, fetchAllPosts } from "../actions";
 
 class App extends Component {
     componentDidMount() {
-        const { loadCategories } = this.props;
-        ReadableAPI.getCategories().then(categories => {
-            loadCategories(categories);
-        });
+        const { fetchCategories, fetchAllPosts } = this.props;
 
-        const { loadPosts } = this.props;
-        ReadableAPI.getPosts().then(posts => {
-            loadPosts(posts);
-        });
+        fetchCategories();
+        fetchAllPosts();
     }
 
     render() {
@@ -46,8 +40,8 @@ class App extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        loadPosts: data => dispatch(showAllPosts(data)),
-        loadCategories: data => dispatch(showCategories(data))
+        fetchAllPosts: () => dispatch(fetchAllPosts()),
+        fetchCategories: () => dispatch(fetchCategories())
     };
 }
 
