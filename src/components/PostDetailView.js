@@ -11,6 +11,7 @@ import {
 } from "../actions";
 import CommentAddModalElement from "./elements/CommentAddModalElement";
 import CommentEditModalElement from "./elements/CommentEditModalElement";
+import PostEditModalElement from "./elements/PostEditModalElement";
 import * as ReadableAPI from "../utils/ReadableAPI";
 import CommentsSubHeader from "./elements/CommentsSubHeader";
 var _ = require("lodash");
@@ -21,8 +22,11 @@ class PostDetailView extends Component {
     //     fetchPost(this.props.location.state.post.id);
     // }
 
-    toggleEditCommentModal() {
-        this.props.toggleEditCommentModal(this.props.isOpenEditCommentModal);
+    toggleEditCommentModal(comment) {
+        this.props.toggleEditCommentModal(
+            this.props.isOpenEditCommentModal,
+            comment
+        );
     }
 
     deleteComment(comment) {
@@ -113,12 +117,10 @@ class PostDetailView extends Component {
                                             size="tiny"
                                             icon="edit"
                                             onClick={() =>
-                                                this.toggleEditCommentModal()}
+                                                this.toggleEditCommentModal(
+                                                    comment
+                                                )}
                                             compact
-                                        />
-                                        <CommentEditModalElement
-                                            open={isOpenEditCommentModal}
-                                            comment={comment}
                                         />
                                         <Button
                                             size="tiny"
@@ -138,6 +140,14 @@ class PostDetailView extends Component {
                     open={isOpenCommentModal}
                     postId={post.id}
                 />
+                <CommentEditModalElement
+                    open={isOpenEditCommentModal}
+                    comment={this.props.editedComment}
+                />
+                <PostEditModalElement
+                    post={post}
+                    open={this.props.isOpenEditPostModal}
+                />
             </Item.Group>
         );
     }
@@ -147,7 +157,8 @@ function mapDispatchToProps(dispatch) {
     return {
         deleteComment: data => dispatch(removeComment(data)),
         createComment: data => dispatch(addCommentAsync(data)),
-        toggleEditCommentModal: data => dispatch(toggleEditCommentModal(data)),
+        toggleEditCommentModal: (data, data2) =>
+            dispatch(toggleEditCommentModal(data, data2)),
         voteForComment: data => dispatch(voteComment(data)),
         fetchPost: data => dispatch(fetchPost(data))
     };
@@ -158,7 +169,10 @@ function mapStateToProps(state) {
         posts: state.reducer.posts,
         comments: state.reducer.comments,
         isOpenCommentModal: state.reducer.modal.commentModal,
-        isOpenEditCommentModal: state.reducer.modal.editCommentModal
+        isOpenEditCommentModal: state.reducer.modal.editCommentModal.status,
+        editedComment: state.reducer.modal.editCommentModal.comment,
+        isOpenEditPostModal: state.reducer.modal.editPostModal.status,
+        editPostModalPost: state.reducer.modal.editPostModal.post
     };
 }
 

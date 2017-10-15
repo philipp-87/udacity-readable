@@ -9,7 +9,7 @@ var _ = require("lodash");
 class PostEditModalElement extends Component {
     submitPost = values => {
         console.log(values);
-        ReadableAPI.editPost(this.props.post.id, {
+        ReadableAPI.editPost(this.props.editedPost.id, {
             title: values.title,
             body: values.body
         })
@@ -27,22 +27,22 @@ class PostEditModalElement extends Component {
     }
 
     getTitle(post) {
-        if (_.isEmpty(post)) {
+        if (_.isEmpty(this.props.editedPost)) {
             return null;
         }
-        return post.title;
+        return this.props.editedPost.title;
     }
 
     getBody(post) {
-        if (_.isEmpty(post)) {
+        if (_.isEmpty(this.props.editedPost)) {
             return null;
         }
-        return post.body;
+        return this.props.editedPost.body;
     }
 
     render() {
-        let post = this.props.editPost;
-
+        let post = this.props.editedPost;
+        console.log(post);
         return (
             <Modal open={this.props.open}>
                 <Modal.Header>
@@ -58,8 +58,8 @@ class PostEditModalElement extends Component {
                 <Modal.Content>
                     <Modal.Description>
                         <PostEditForm
-                            title={this.getTitle(post)}
-                            body={this.getBody(post)}
+                            title={this.getTitle()}
+                            body={this.getBody()}
                             onSubmit={this.submitPost}
                         />
                     </Modal.Description>
@@ -80,7 +80,7 @@ function mapStateToProps(state) {
     return {
         posts: state.reducer.posts,
         isOpenEditPostModal: state.reducer.modal.editPostModal.status,
-        editPost: state.reducer.modal.editPostModal.post
+        editedPost: state.reducer.modal.editPostModal.post
     };
 }
 

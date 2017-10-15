@@ -142,8 +142,6 @@ export function togglePostModal(isOpen) {
 }
 
 export function toggleEditPostModal(isOpen, post) {
-    console.log(isOpen);
-    console.log(post);
     if (isOpen === false) {
         isOpen = true;
     } else {
@@ -168,7 +166,7 @@ export function toggleCommentModal(isOpen) {
     };
 }
 
-export function toggleEditCommentModal(isOpen) {
+export function toggleEditCommentModal(isOpen, comment) {
     if (isOpen === false) {
         isOpen = true;
     } else {
@@ -176,6 +174,7 @@ export function toggleEditCommentModal(isOpen) {
     }
     return {
         type: TOGGLE_EDIT_COMMENT_MODAL,
-        isOpen
+        isOpen,
+        comment
     };
 }

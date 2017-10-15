@@ -158,7 +158,8 @@ function mapDispatchToProps(dispatch) {
         voteForPost: data => dispatch(votePost(data)),
         loadComments: data => dispatch(fetchComments(data)),
         deletePost: data => dispatch(removePost(data)),
-        toggleEditPostModal: data => dispatch(toggleEditPostModal(data))
+        toggleEditPostModal: (data, data2) =>
+            dispatch(toggleEditPostModal(data, data2))
     };
 }
 

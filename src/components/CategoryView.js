@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import PostElement from "./elements/PostElement";
 import { Item, Header } from "semantic-ui-react";
 import PostAddModalElement from "./elements/PostAddModalElement";
+import PostEditModalElement from "./elements/PostEditModalElement";
 import PostsSubHeader from "./elements/PostsSubHeader";
 var _ = require("lodash");
 
@@ -26,6 +27,10 @@ class CategoryView extends Component {
                     <div />
                 </Item.Group>
                 <PostAddModalElement open={isOpenPostModal} />
+                <PostEditModalElement
+                    post={this.props.editPostModalPost}
+                    open={this.props.isOpenEditPostModal}
+                />
             </Item.Group>
         );
     }
@@ -35,7 +40,9 @@ function mapStateToProps(state) {
     return {
         posts: state.reducer.posts,
         sortType: state.reducer.postsSortType,
-        isOpenPostModal: state.reducer.modal.postModal
+        isOpenPostModal: state.reducer.modal.postModal,
+        isOpenEditPostModal: state.reducer.modal.editPostModal.status,
+        editPostModalPost: state.reducer.modal.editPostModal.post
     };
 }
 

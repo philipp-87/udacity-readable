@@ -27,7 +27,10 @@ const initialState = {
             post: null
         },
         commentModal: false,
-        editCommentModal: false
+        editCommentModal: {
+            status: false,
+            comment: null
+        }
     },
     postsSortType: "voteScore"
 };
@@ -167,6 +170,7 @@ function Readable(state = initialState, action) {
             return {
                 ...state,
                 modal: {
+                    ...state.modal,
                     editPostModal: {
                         status: action.isOpen,
                         post: action.post
@@ -186,7 +190,11 @@ function Readable(state = initialState, action) {
             return {
                 ...state,
                 modal: {
-                    editCommentModal: action.isOpen
+                    ...state.modal,
+                    editCommentModal: {
+                        status: action.isOpen,
+                        comment: action.comment
+                    }
                 }
             };
 

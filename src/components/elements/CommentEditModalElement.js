@@ -4,10 +4,11 @@ import { Button, Modal, Icon } from "semantic-ui-react";
 import { editComment, toggleEditCommentModal } from "../../actions";
 import CommentEditForm from "./CommentEditForm";
 import * as ReadableAPI from "../../utils/ReadableAPI";
+var _ = require("lodash");
 
 class CommentEditModalElement extends Component {
     submitComment = values => {
-        ReadableAPI.editComment(this.props.comment.id, {
+        ReadableAPI.editComment(this.props.editedComment.id, {
             body: values.body
         })
             .then(comment => {
@@ -20,7 +21,17 @@ class CommentEditModalElement extends Component {
     };
 
     toggleModal() {
-        this.props.toggleEditCommentModal(this.props.isOpenEditCommentModal);
+        this.props.toggleEditCommentModal(
+            this.props.isOpenEditCommentModal,
+            null
+        );
+    }
+
+    getBody(post) {
+        if (_.isEmpty(this.props.editedComment)) {
+            return null;
+        }
+        return this.props.editedComment.body;
     }
 
     render() {
@@ -40,7 +51,7 @@ class CommentEditModalElement extends Component {
                     <Modal.Description>
                         <CommentEditForm
                             onSubmit={this.submitComment}
-                            body={this.props.comment.body}
+                            body={this.getBody()}
                         />
                     </Modal.Description>
                 </Modal.Content>
@@ -58,7 +69,8 @@ function mapDispatchToProps(dispatch) {
 
 function mapStateToProps(state) {
     return {
-        isOpenEditCommentModal: state.reducer.modal.editCommentModal
+        isOpenEditCommentModal: state.reducer.modal.editCommentModal,
+        editedComment: state.reducer.modal.editCommentModal.comment
     };
 }
 

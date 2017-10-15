@@ -48,9 +48,7 @@ const renderTextAreaField = ({
 );
 
 let PostEditForm = props => {
-    const { handleSubmit, pristine, reset, submitting, body, title } = props;
-    console.log(title);
-    console.log(body);
+    const { handleSubmit, pristine, reset, submitting } = props;
     return (
         <form onSubmit={handleSubmit}>
             <Field
