@@ -162,6 +162,7 @@ function Readable(state = initialState, action) {
             return {
                 ...state,
                 modal: {
+                    ...state.modal,
                     postModal: action.isOpen
                 }
             };
@@ -182,6 +183,7 @@ function Readable(state = initialState, action) {
             return {
                 ...state,
                 modal: {
+                    ...state.modal,
                     commentModal: action.isOpen
                 }
             };
